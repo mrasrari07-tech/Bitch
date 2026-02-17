@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  overflow:hidden;
+  background:black;
+  color:white;
+}
+
+video{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-2;
+}
+
+.overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.7);
+  z-index:-1;
+  transition:0.4s ease;
+}
+
+.flash{
+  animation:whiteFlash 0.6s infinite alternate;
+}
+
+@keyframes whiteFlash{
+  from{background:rgba(0,0,0,0.7);}
+  to{background:rgba(255,255,255,0.95);}
+}
+
+section{
+  width:100%;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  position:absolute;
+  top:0;
+  left:0;
+  transition:0.6s ease;
+}
+
+.hidden{
+  opacity:0;
+  pointer-events:none;
+}
+
+h1{
+  font-family:'Playfair Display',serif;
+  font-size:30px;
+  margin-bottom:25px;
+}
+
+.line{
+  opacity:0;
+  transform:translateY(20px);
+  animation:fadeUp 1.2s ease forwards;
+}
+
+.line:nth-child(2){animation-delay:1s;}
+.line:nth-child(3){animation-delay:2s;}
+.line:nth-child(4){animation-delay:3s;}
+.line:nth-child(5){animation-delay:4s;}
+.line:nth-child(6){animation-delay:5s;}
+.line:nth-child(7){animation-delay:6s;}
+.line:nth-child(8){animation-delay:7s;}
+.line:nth-child(9){animation-delay:8s;}
+.line:nth-child(10){animation-delay:9s;}
+
+@keyframes fadeUp{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+button{
+  padding:12px 28px;
+  border:none;
+  background:white;
+  color:black;
+  font-weight:600;
+  cursor:pointer;
+  border-radius:4px;
+  margin-top:30px;
+}
+
+.headset{
+  position:absolute;
+  bottom:40px;
+  font-size:14px;
+  opacity:0.7;
+}
+
+.stopBtn{
+  position:absolute;
+  bottom:140px;
+  background:white;
+  color:black;
+  padding:10px 20px;
+  border-radius:4px;
+  cursor:pointer;
+  transition:0.2s ease;
+}
+
+.musicToggle{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:rgba(255,255,255,0.2);
+  padding:8px 14px;
+  border-radius:20px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+</style>
+</head>
+<body>
+
+<video autoplay muted loop>
+  <source src="fuck01.mp4" type="video/mp4">
+</video>
+
+<div class="overlay" id="overlay"></div>
+
+<audio id="bgMusic" loop>
+  <source src="asshole.mp3" type="audio/mp3">
+</audio>
+
+<audio id="voiceNote">
+  <source src="bitch.mp3" type="audio/mp3">
+</audio>
+
+<div class="musicToggle" onclick="toggleMusic()">Music</div>
+
+<!-- PAGE 1 -->
+<section id="page1">
+  <h1>This isn’t just a page.</h1>
+  <div class="line">Before you continue…</div>
+  <div class="line">take a deep breath.</div>
+  <button onclick="startExperience()">Continue</button>
+  <div class="headset">🎧 Please use headset</div>
+</section>
+
+<!-- PAGE 2 -->
+<section id="page2" class="hidden">
+  <h1>There are things I never said.</h1>
+
+  <div class="line">I acted normal.</div>
+  <div class="line">I laughed in front of you.</div>
+  <div class="line">But inside…</div>
+  <div class="line">I kept wondering what changed.</div>
+  <div class="line">I never blamed you.</div>
+  <div class="line">I just didn’t know</div>
+  <div class="line">how to explain my heart.</div>
+
+  <button onclick="goPage3()">Continue</button>
+</section>
+
+<!-- PAGE 3 -->
+<section id="page3" class="hidden">
+  <h1>Just listen.</h1>
+
+  <div class="line">Maybe you thought I crossed a line.</div>
+  <div class="line">Maybe you pulled away quietly.</div>
+  <div class="line">Maybe you thought I fell for you.</div>
+  <div class="line">But the truth is softer.</div>
+  <div class="line">I didn’t want forever.</div>
+  <div class="line">I just liked how we talked.</div>
+  <div class="line">You were my comfort space.</div>
+  <div class="line">And losing that…</div>
+  <div class="line">hurt more than I expected.</div>
+
+  <button onclick="playVoice()">Play Voice Note</button>
+  <div class="stopBtn" id="stopBtn">Stop</div>
+  <div class="headset">🎧 Put your headset on</div>
+</section>
+
+<script>
+
+const bgMusic = document.getElementById("bgMusic");
+const voice = document.getElementById("voiceNote");
+const overlay = document.getElementById("overlay");
+const stopBtn = document.getElementById("stopBtn");
+
+let musicPlaying = false;
+
+function startExperience(){
+  document.getElementById("page1").classList.add("hidden");
+  document.getElementById("page2").classList.remove("hidden");
+
+  bgMusic.play().catch(()=>{});
+  musicPlaying = true;
+}
+
+function toggleMusic(){
+  if(musicPlaying){
+    bgMusic.pause();
+    musicPlaying=false;
+  } else {
+    bgMusic.play().catch(()=>{});
+    musicPlaying=true;
+  }
+}
+
+function goPage3(){
+  document.getElementById("page2").classList.add("hidden");
+  document.getElementById("page3").classList.remove("hidden");
+}
+
+function playVoice(){
+  bgMusic.pause();
+  overlay.classList.add("flash");
+  voice.play().catch(()=>{});
+}
+
+/* Stop button does nothing */
+stopBtn.addEventListener("click",()=>{
+  // intentionally empty
+});
+
+/* Stop button runs away */
+stopBtn.addEventListener("mouseover",()=>{
+  const randomX = Math.random() * (window.innerWidth - 100);
+  const randomY = Math.random() * (window.innerHeight - 200);
+
+  stopBtn.style.left = randomX + "px";
+  stopBtn.style.top = randomY + "px";
+  stopBtn.style.position = "absolute";
+});
+
+voice.onended = function(){
+  overlay.classList.remove("flash");
+  bgMusic.play().catch(()=>{});
+}
+
+</script>
+
+</body>
+</html>
